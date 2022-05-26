@@ -1,14 +1,18 @@
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-function App() {
+const app = () => {
+  const [name, setName] = useState("btc-bitcoin");
+  const router = useRouter();
   return (
     <div>
-      <h2>Link pages</h2>
-      <Link href="/tomato">
-        <a>Move to tomato</a>
-      </Link>
+      <h2>search coin</h2>
+      <input value={name} onChange={(e) => setName(e.target.value)} style={{ marginRight: "12px" }} />
+      <button type="button" onClick={() => router.push(`/coin/${name}`)}>
+        go {name}
+      </button>
     </div>
   );
-}
+};
 
-export default App;
+export default app;

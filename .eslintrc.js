@@ -44,6 +44,7 @@ module.exports = {
     "jsx-ally/label-has-associated-control": "off",
     "no-invalid-css": "off",
     "no-confusing-arrow": "off",
+    "jsx-a11y/alt-text": "off",
     "react/jsx-curly-newline": "off",
     indent: "off",
     "react/jsx-filename-extension": [
