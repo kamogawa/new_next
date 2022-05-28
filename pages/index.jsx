@@ -8,7 +8,7 @@ const app = () => {
     <div>
       <h2>search coin</h2>
       <input value={name} onChange={(e) => setName(e.target.value)} style={{ marginRight: "12px" }} />
-      <button type="button" onClick={() => router.push(`/coin/${name}`)}>
+      <button type="button" onClick={() => router.push(`/user/${name}`)}>
         go {name}
       </button>
     </div>
