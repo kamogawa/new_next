@@ -1,53 +1,100 @@
 import styled from "styled-components";
+import formatDistance from "date-fns/formatDistance";
+import Profile from "../../src/components/Profile";
 
-const ProfileBox = styled.div`
-  width: 20%;
-  max-width: 272px;
-  margin-right: 26px;
+const UserContentsWrapper = styled.div`
+  display: flex;
+  padding: 20px;
 `;
 
-const ProfileImage = styled.img`
-  display: block;
+const ReposWrapper = styled.div`
   width: 100%;
+  height: 100vh;
+  overflow: scroll;
+  padding: 0px 16px;
 `;
 
-const ProfileImageWrapper = styled.div`
+const ReposHeader = styled.div`
+  padding: 16px 0;
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #e1e4e8;
+`;
+
+const ReposCount = styled.span`
+  display: inline-block;
+  padding: 2px 5px;
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  color: #586069;
+  background-color: rgba(27, 31, 35, 0.08);
+  border-radius: 20px;
+`;
+
+const RepositoryWrapper = styled.div`
   width: 100%;
-  border: 1px solid #e1e4e8;
-  ${ProfileImage}
+  border-bottom: 1px solid #e1e4e8;
+  padding: 24px 0;
+  a {
+    text-decoration: none;
+  }
+  h2 { 
+    text-decoration: underline;
+  }
 `;
 
-const ProfileUsername = styled.h2`
+const RepositoryDesc = styled.p`
   margin: 0;
-  padding-top: 15px;
-  font-size: 25px;
+  font-size: 14px;
+  padding: 12px 0;
 `;
 
-const ProfileUserLogin = styled.p`
+const RepositoryLang = styled.p`
   margin: 0;
-  font-size: 20px;
-`;
-
-const ProfileUserBio = styled.p`
-  margin: 0;
-  padding-top: 15px;
   font-size: 14px;
 `;
 
-const name = ({ user }) => {
+const RepositoryUpdatedAt = styled.span`
+  margin-left: 20px;
+`;
+
+const name = ({ user, repos }) => {
   if (!user) {
     return null;
   }
 
   return (
-    <ProfileBox>
-      <ProfileImageWrapper>
-        <ProfileImage src={user.avatar_url} alt={`${user.name} 프로필 이미지`} />
-      </ProfileImageWrapper>
-      <ProfileUsername>{user.name}</ProfileUsername>
-      <ProfileUserLogin>{user.login}</ProfileUserLogin>
-      <ProfileUserBio>{user.bio}</ProfileUserBio>
-    </ProfileBox>
+    <UserContentsWrapper>
+      <Profile user={user} />
+      <ReposWrapper>
+        <ReposHeader>
+          Repsitories
+          <ReposCount>{user.public_repos}</ReposCount>
+        </ReposHeader>
+        {user && repos &&
+          repos.map((repo, i) => (
+            <RepositoryWrapper key={i}>
+              <a target="_blank" rel="noreferrer" href={`https://github.com/${user.login}/${repo.name}`}>
+                <h2>{repo.name}</h2>
+              </a>
+              <RepositoryDesc>
+                {repo.description}
+              </RepositoryDesc>
+              <RepositoryLang>
+                {repo.language}
+                <RepositoryUpdatedAt>
+                  {formatDistance(new Date(repo.updated_at), new Date(), {
+                    addSuffix: true,
+                  })}
+                </RepositoryUpdatedAt>
+              </RepositoryLang>
+            </RepositoryWrapper>
+          ))
+        }
+      </ReposWrapper>
+    </UserContentsWrapper>
   );
 };
 
@@ -60,12 +107,18 @@ const name = ({ user }) => {
 export const getServerSideProps = async ({ query }) => {
   const { name } = query;
   try {
-    const res = await fetch(`https://api.github.com/users/${name}`);
-    if (res.status === 200) {
-      const user = await res.json();
-      return { props: { user } };
+    let user;
+    let repos;
+
+    const userRes = await fetch(`https://api.github.com/users/${name}`);
+    if (userRes.status === 200) {
+      user = await userRes.json();
     }
-    return { props: {} };
+    const repoRes = await fetch(`https://api.github.com/users/${name}/repos?sort=updated&page=1&per_page=10`);
+    if (repoRes.status === 200) {
+      repos = await repoRes.json();
+    }
+    return { props: { user, repos } };
   } catch (e) {
     console.log(e);
     return { props: {} };
