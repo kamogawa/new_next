@@ -1,13 +1,19 @@
+import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 import Header from "../components/Header";
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
+    font-family: Roboto;
   }
 `;
 
-export default function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }) => {
+  useEffect(() => {
+    throw Error();
+  }, []);
+
   return (
     <>
       <GlobalStyle />
@@ -15,4 +21,6 @@ export default function MyApp({ Component, pageProps }) {
       <Component {...pageProps} />
     </>
   );
-}
+};
+
+export default MyApp;

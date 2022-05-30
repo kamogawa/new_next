@@ -40,6 +40,7 @@ module.exports = {
     "global-require": "off",
     "no-use-before-define": "off",
     "import/prefer-default-export": "off",
+    "react/function-component-definition": "off",
     "no-param-ressign": "off",
     "jsx-ally/label-has-associated-control": "off",
     "no-invalid-css": "off",

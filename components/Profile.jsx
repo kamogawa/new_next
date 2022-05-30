@@ -45,7 +45,7 @@ const ProfileUserInfoText = styled.span`
   margin-left: 6px;
 `;
 
-function Profile({ user }) {
+const Profile = ({ user }) => {
   if (!user) {
     return null;
   }
@@ -68,6 +68,6 @@ function Profile({ user }) {
       </ProfileUserInfo>
     </ProfileBox>
   );
-}
+};
 
 export default Profile;

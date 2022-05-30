@@ -88,7 +88,7 @@ const RepositoryPagination = styled.div`
   }
 `;
 
-function Repositories({ user, repos }) {
+const Repositories = ({ user, repos }) => {
   const router = useRouter();
   const { page = "1" } = router.query;
 
@@ -140,6 +140,6 @@ function Repositories({ user, repos }) {
       </RepositoryPagination>
     </ReposWrapper>
   );
-}
+};
 
 export default Repositories;

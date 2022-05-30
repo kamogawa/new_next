@@ -37,7 +37,7 @@ const HeaderNavigations = styled.nav`
   }
 `;
 
-function Header() {
+const Header = () => {
   const [username, setUsername] = useState("");
   const router = useRouter();
 
@@ -63,6 +63,6 @@ function Header() {
       </HeaderWrapper>
     </div>
   );
-}
+};
 
 export default Header;
