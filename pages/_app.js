@@ -1,7 +1,18 @@
-import "../styles/globals.css";
+import { createGlobalStyle } from "styled-components";
+import Header from "../components/Header";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+  }
+`;
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <GlobalStyle />
+      <Header />
+      <Component {...pageProps} />
+    </>
+  );
 }
-
-export default MyApp;
